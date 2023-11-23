@@ -9,7 +9,7 @@ class AuthorController {
             const authorsList: Array<IAuthor> = await author.find({})
             res.status(200).json(authorsList)
         } catch (err) {
-            res.status(500).send(`Erro: Não foi possível carregar os autores, ${err.body}`)
+            res.status(500).send(`Erro: Não foi possível carregar os autores, ${err.message}`)
         }
     }
 }

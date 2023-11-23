@@ -1,46 +1,48 @@
+import { Request, Response } from "express";
+import { IBook } from "../interfaces/IBook.js";
 import book from "../models/Book.js";
 
 class BookController {
 
-    static async getBooks(req, res) {
+    static async getBooks(req: Request, res: Response) {
         try {
-            const booksList = await book.find({})
+            const booksList: Array<IBook> = await book.find({})
             res.status(200).json(booksList)
         } catch (err) {
-            res.status(500).json({ message: `Erro: não foi possível carregar os livros, ${err.message}` })
+            res.status(500).send(`Erro: não foi possível carregar os livros, ${err.message}`)
         }
     }
 
-    static async getBookById(req, res) {
+    static async getBookById(req: Request, res: Response) {
         try {
             const id = req.params.id
-            const bookFind = await book.findById(id)
+            const bookFind = await book.findById<IBook>(id)
             res.status(200).json(bookFind)
         } catch (err) {
-            res.status(500).json({ message: `Erro: não foi possível carregar o livro, ${err.message}` })
+            res.status(500).send(`Erro: não foi possível carregar o livro, ${err.message}`)
         }
     }
 
-    static async addBook(req, res) {
+    static async addBook(req: Request, res: Response) {
         try {
-            const newBook = await book.create(req.body)
-            res.status(201).json({ message: "Novo livro cadastrado", book: newBook })
+            await book.create(req.body)
+            res.status(201).send("Novo livro cadastrado")
         } catch (err) {
-            res.status(500).json({ message: `Erro: não foi possível cadastrar o livro, ${err.message}` })
+            res.status(500).send(`Erro: não foi possível cadastrar o livro, ${err.message}`)
         }
     }
 
-    static async updateBook(req, res) {
+    static async updateBook(req: Request, res: Response) {
         try {
             const id = req.params.id
             await book.findByIdAndUpdate(id, req.body)
-            res.status(200).json({ message: "Livro atualizado com sucesso" })
+            res.status(200).send("Livro atualizado com sucesso")
         } catch (err) {
-            res.status(500).json({ message: `Erro: não foi possível atualizar o livro, ${err.message}` })
+            res.status(500).send(`Erro: não foi possível atualizar o livro, ${err.message}`)
         }
     }
 
-    static async deleteBook(req, res) {
+    static async deleteBook(req: Request, res: Response) {
         try {
             const id = req.params.id
             await book.findByIdAndDelete(id)
