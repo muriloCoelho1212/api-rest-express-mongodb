@@ -29,7 +29,7 @@ class BookController {
             const bookCompleted = {
                 ...newBook,
                 author: {
-                    ...findAuthor
+                    ...findAuthor._doc
                 }
             }
             await book.create(bookCompleted)
@@ -56,6 +56,16 @@ class BookController {
             res.status(200).send("Livro deletado com sucesso")
         } catch (err) {
             res.status(500).send(`Erro: não foi possível deletar o livro, ${err.message}`)
+        }
+    }
+
+    static async getBookperPublishingCompany(req, res) {
+        const search = req.query.publishing_company
+        try {
+            const bookPerPublishingCompany = await book.find({  publishing_company: search })
+            res.status(200).json(bookPerPublishingCompany)
+        } catch (err) {
+            res.status(500).send(`Erro: não foi possível carregar o livro, ${err.message}`)
         }
     }
 }
