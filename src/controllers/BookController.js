@@ -1,5 +1,5 @@
-import { IBook } from "../interfaces/IBook";
-import book from "../models/Book";
+import { author } from "../models/Author.js";
+import book from "../models/Book.js";
 
 class BookController {
 
@@ -15,7 +15,7 @@ class BookController {
     static async getBookById(req, res) {
         try {
             const id = req.params.id
-            const bookFind = await book.findById<IBook>(id)
+            const bookFind = await book.findById(id)
             res.status(200).json(bookFind)
         } catch (err) {
             res.status(500).send(`Erro: não foi possível carregar o livro, ${err.message}`)
@@ -23,8 +23,16 @@ class BookController {
     }
 
     static async addBook(req, res) {
+        const newBook = req.body
         try {
-            await book.create(req.body)
+            const findAuthor = await author.findById(newBook.author) 
+            const bookCompleted = {
+                ...newBook,
+                author: {
+                    ...findAuthor
+                }
+            }
+            await book.create(bookCompleted)
             res.status(201).send("Novo livro cadastrado")
         } catch (err) {
             res.status(500).send(`Erro: não foi possível cadastrar o livro, ${err.message}`)
@@ -50,7 +58,6 @@ class BookController {
             res.status(500).send(`Erro: não foi possível deletar o livro, ${err.message}`)
         }
     }
-
 }
 
 export default BookController

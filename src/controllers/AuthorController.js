@@ -1,4 +1,4 @@
-import { author } from "../models/Author"
+import { author } from "../models/Author.js"
 
 class AuthorController {
     static async getAuthors(req, res) {
@@ -18,7 +18,8 @@ class AuthorController {
     }
     static async createAuthor(req, res) {
         try {
-
+            await author.create(req.body)
+            res.status(201).send('Autor cadastrado com sucesso')
         } catch (err) {
             res.status(500).send(`Erro: Não foi possível criar um autor, ${err.message}`)
         }
