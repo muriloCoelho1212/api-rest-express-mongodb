@@ -1,11 +1,10 @@
-import { author } from "../models/Author.js";
 import book from "../models/Book.js";
 
 class BookController {
 
     static async getBooks(req, res) {
         try {
-            const booksList = await book.find({})
+            const booksList = await book.find({}).populate("author").exec()
             res.status(200).json(booksList)
         } catch (err) {
             res.status(500).send(`Erro: não foi possível carregar os livros, ${err.message}`)
@@ -23,16 +22,8 @@ class BookController {
     }
 
     static async addBook(req, res) {
-        const newBook = req.body
         try {
-            const findAuthor = await author.findById(newBook.author) 
-            const bookCompleted = {
-                ...newBook,
-                author: {
-                    ...findAuthor._doc
-                }
-            }
-            await book.create(bookCompleted)
+            await book.create(req.body)
             res.status(201).send("Novo livro cadastrado")
         } catch (err) {
             res.status(500).send(`Erro: não foi possível cadastrar o livro, ${err.message}`)
