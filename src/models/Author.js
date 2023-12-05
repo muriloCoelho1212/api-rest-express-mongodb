@@ -1,13 +1,12 @@
 import mongoose from "mongoose"
-import { IAuthor } from "../interfaces/IAuthor"
 
-const authorSchema = new mongoose.Schema<IAuthor>({
+const authorSchema = new mongoose.Schema({
     id: { type: mongoose.Schema.Types.ObjectId },
     name: { type: String, required: true },
     nationality: { type: String },
 }, { versionKey: false })
 
-const author = mongoose.model<IAuthor>("author", authorSchema)
+const author = mongoose.model("author", authorSchema)
 
 export { author, authorSchema }
 

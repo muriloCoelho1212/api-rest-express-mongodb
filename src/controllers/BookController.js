@@ -1,19 +1,18 @@
-import { Request, Response } from "express";
-import { IBook } from "../interfaces/IBook.js";
-import book from "../models/Book.js";
+import { IBook } from "../interfaces/IBook";
+import book from "../models/Book";
 
 class BookController {
 
-    static async getBooks(req: Request, res: Response) {
+    static async getBooks(req, res) {
         try {
-            const booksList: Array<IBook> = await book.find({})
+            const booksList = await book.find({})
             res.status(200).json(booksList)
         } catch (err) {
             res.status(500).send(`Erro: não foi possível carregar os livros, ${err.message}`)
         }
     }
 
-    static async getBookById(req: Request, res: Response) {
+    static async getBookById(req, res) {
         try {
             const id = req.params.id
             const bookFind = await book.findById<IBook>(id)
@@ -23,7 +22,7 @@ class BookController {
         }
     }
 
-    static async addBook(req: Request, res: Response) {
+    static async addBook(req, res) {
         try {
             await book.create(req.body)
             res.status(201).send("Novo livro cadastrado")
@@ -32,7 +31,7 @@ class BookController {
         }
     }
 
-    static async updateBook(req: Request, res: Response) {
+    static async updateBook(req, res) {
         try {
             const id = req.params.id
             await book.findByIdAndUpdate(id, req.body)
@@ -42,7 +41,7 @@ class BookController {
         }
     }
 
-    static async deleteBook(req: Request, res: Response) {
+    static async deleteBook(req, res) {
         try {
             const id = req.params.id
             await book.findByIdAndDelete(id)
