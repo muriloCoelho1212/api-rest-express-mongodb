@@ -11,7 +11,7 @@ function handlingError (err, req, res, next)  {
     const errMessage = Object.values(err.errors)
       .map(e => e.message)
       .join("; ");
-    res.status(400).send({ message: `${errorMessages.VALIDATION_ERROR}; ${errMessage}`});
+    res.status(400).send({ message: `${errorMessages.VALIDATION_ERROR} ${errMessage}`});
   }
   else {
     res.status(500).send(errorMessages.INTERNAL_SERVER_ERROR);
