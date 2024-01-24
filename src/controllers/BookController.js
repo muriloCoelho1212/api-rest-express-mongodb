@@ -2,61 +2,61 @@ import book from "../models/Book.js";
 
 class BookController {
 
-  static async getBooks(req, res) {
+  static async getBooks(req, res, next) {
     try {
       const booksList = await book.find({}).populate("author").exec();
       res.status(200).json(booksList);
     } catch (err) {
-      res.status(500).send(`Erro: não foi possível carregar os livros, ${err.message}`);
+      next(err);
     }
   }
 
-  static async getBookById(req, res) {
+  static async getBookById(req, res, next) {
     try {
       const id = req.params.id;
       const bookFind = await book.findById(id);
       res.status(200).json(bookFind);
     } catch (err) {
-      res.status(500).send(`Erro: não foi possível carregar o livro, ${err.message}`);
+      next(err);
     }
   }
 
-  static async addBook(req, res) {
+  static async addBook(req, res, next) {
     try {
       await book.create(req.body);
       res.status(201).send("Novo livro cadastrado");
     } catch (err) {
-      res.status(500).send(`Erro: não foi possível cadastrar o livro, ${err.message}`);
+      next(err);
     }
   }
 
-  static async updateBook(req, res) {
+  static async updateBook(req, res, next) {
     try {
       const id = req.params.id;
       await book.findByIdAndUpdate(id, req.body);
       res.status(200).send("Livro atualizado com sucesso");
     } catch (err) {
-      res.status(500).send(`Erro: não foi possível atualizar o livro, ${err.message}`);
+      next(err);
     }
   }
 
-  static async deleteBook(req, res) {
+  static async deleteBook(req, res, next) {
     try {
       const id = req.params.id;
       await book.findByIdAndDelete(id);
       res.status(200).send("Livro deletado com sucesso");
     } catch (err) {
-      res.status(500).send(`Erro: não foi possível deletar o livro, ${err.message}`);
+      next(err);
     }
   }
 
-  static async getBookperPublishingCompany(req, res) {
+  static async getBookperPublishingCompany(req, res, next) {
     const search = req.query.publishing_company;
     try {
       const bookPerPublishingCompany = await book.find({  publishing_company: search });
       res.status(200).json(bookPerPublishingCompany);
     } catch (err) {
-      res.status(500).send(`Erro: não foi possível carregar o livro, ${err.message}`);
+      next(err);
     }
   }
 }

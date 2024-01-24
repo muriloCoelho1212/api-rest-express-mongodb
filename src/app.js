@@ -1,6 +1,7 @@
 import express from "express";
 import connectDb from "./config/dbConnect.js";
 import routes from "./routes/index.js";
+import handlingError from "./middlewares/handlingErros.js";
 
 const mongoConnection = await connectDb();
 
@@ -14,5 +15,8 @@ mongoConnection.once("open", () => {
 
 const app = express();
 routes(app);
+
+// eslint-disable-next-line no-unused-vars
+app.use(handlingError);
 
 export default app;
