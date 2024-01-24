@@ -1,4 +1,5 @@
 import { author } from "../models/Author.js";
+import mongoose from "mongoose";
 
 class AuthorController {
   static async getAuthors(req, res) {
@@ -13,9 +14,17 @@ class AuthorController {
     try {
       const id = req.params.id;
       const authorFind = await author.findById(id);
-      res.status(200).json(authorFind);
+      if (!authorFind) { 
+        res.status(404).send("Erro: Não foi possível encontrar o Id do autor");
+      } else {
+        res.status(200).json(authorFind);
+      }
     } catch (err) {
-      res.status(500).send(`Erro: Não foi possível carregar o autor, ${err.message}`);
+      if (err instanceof mongoose.Error.CastError) {
+        res.status(400).send("Erro: Formato do Id incorreto");
+      } else {
+        res.status(500).send(`Erro: Não foi possível carregar o autor, ${err.message}`);
+      }
     }
   }
   static async createAuthor(req, res) {
