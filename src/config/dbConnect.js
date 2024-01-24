@@ -1,9 +1,9 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 function connectDb() {
-    mongoose.connect(process.env.DB_CONNECT_STRING ?? '')
+  mongoose.connect(process.env.DB_CONNECT_STRING ?? "");
 
-    return mongoose.connection
+  return mongoose.connection;
 }
 
-export default connectDb
+export default connectDb;
