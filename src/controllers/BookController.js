@@ -1,3 +1,4 @@
+import { successMessages } from "../helpers/successMessages.js";
 import book from "../models/Book.js";
 
 class BookController {
@@ -24,7 +25,7 @@ class BookController {
   static async addBook(req, res, next) {
     try {
       await book.create(req.body);
-      res.status(201).send("Novo livro cadastrado");
+      res.status(201).send(successMessages.CREATE_BOOK);
     } catch (err) {
       next(err);
     }
@@ -34,7 +35,7 @@ class BookController {
     try {
       const id = req.params.id;
       await book.findByIdAndUpdate(id, req.body);
-      res.status(200).send("Livro atualizado com sucesso");
+      res.status(200).send(successMessages.UPDATE_BOOK);
     } catch (err) {
       next(err);
     }
@@ -44,7 +45,7 @@ class BookController {
     try {
       const id = req.params.id;
       await book.findByIdAndDelete(id);
-      res.status(200).send("Livro deletado com sucesso");
+      res.status(200).send(successMessages.DELETE_BOOK);
     } catch (err) {
       next(err);
     }

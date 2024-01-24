@@ -1,3 +1,5 @@
+import { errorMessages } from "../helpers/errorMessages.js";
+import { successMessages } from "../helpers/successMessages.js";
 import { author } from "../models/Author.js";
 
 class AuthorController {
@@ -14,7 +16,7 @@ class AuthorController {
       const id = req.params.id;
       const authorFind = await author.findById(id);
       if (!authorFind) { 
-        res.status(404).send("Erro: Não foi possível encontrar o Id do autor");
+        res.status(404).send(errorMessages.ERROR_ID_NOT_FOUND);
       } else {
         res.status(200).json(authorFind);
       }
@@ -25,7 +27,7 @@ class AuthorController {
   static async createAuthor(req, res, next) {
     try {
       await author.create(req.body);
-      res.status(201).send("Autor cadastrado com sucesso");
+      res.status(201).send(successMessages.CREATE_AUTHOR);
     } catch (err) {
       next(err);
     }
@@ -34,7 +36,7 @@ class AuthorController {
     try {
       const id = req.params.id;
       await author.findByIdAndUpdate(id, req.body);
-      res.status(200).send("Livro atualizado com sucesso");
+      res.status(200).send(successMessages.UPDATE_AUTHOR);
     } catch (err) {
       next(err);
     }
@@ -43,7 +45,7 @@ class AuthorController {
     try {
       const id = req.params.id;
       await author.findByIdAndDelete(id);
-      res.status(200).send("Autor deletado com sucesso");
+      res.status(200).send(successMessages.DELETE_AUTHOR);
     } catch (err) {
       next(err);
     }

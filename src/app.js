@@ -1,7 +1,7 @@
 import express from "express";
 import connectDb from "./config/dbConnect.js";
 import routes from "./routes/index.js";
-import handlingError from "./middlewares/handlingErros.js";
+import handlingError from "./middlewares/handlingErrors.js";
 
 const mongoConnection = await connectDb();
 
