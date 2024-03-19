@@ -5,6 +5,7 @@ class AuthorController {
         try {
             const authorsList = await author.find({})
             res.status(200).json(authorsList)
+            console.log("teste")
         } catch (err) {
             res.status(500).send(`Erro: Não foi possível carregar os autores, ${err.message}`)
         }
