@@ -1,20 +1,19 @@
 import mongoose from "mongoose";
-import { errorMessages } from "../helpers/errorMessages.js";
+import BaseError from "../helpers/BaseError.js";
+import HandlingRequestErrors from "../helpers/handlingRequestErrors.js";
+import ValidationError from "../helpers/ValidationError.js";
 
 // eslint-disable-next-line no-unused-vars
 function handlingError (err, req, res, next)  {
   console.error(err);
 
   if (err instanceof mongoose.Error.CastError) {
-    res.status(400).send(errorMessages.ERROR_FORMAT_ID);
+    new HandlingRequestErrors().sendRes(res)
   } else if (err instanceof mongoose.Error.ValidationError) {
-    const errMessage = Object.values(err.errors)
-      .map(e => e.message)
-      .join("; ");
-    res.status(400).send({ message: `${errorMessages.VALIDATION_ERROR} ${errMessage}`});
+    new ValidationError(err).sendRes(res)
   }
   else {
-    res.status(500).send(errorMessages.INTERNAL_SERVER_ERROR);
+    new BaseError().sendRes(res)
   }
 }
 
